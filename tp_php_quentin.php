@@ -91,17 +91,21 @@
                     $requete="";
 
                     if(isset($_GET['search'])) {
-                        $requete=$db->prepare("SELECT * FROM joueurs WHERE id like ? 
-                         or nom like ? 
-                         or hp like ? 
-                         or mp like ?
-                         or puissance like ?
-                         or magie like ?
-                         or defense like ?");
+                        $requete=$db->prepare("SELECT * FROM joueurs WHERE id like :id
+                         or nom like :nom
+                         or hp like :hp
+                         or mp like :mp
+                         or puissance like :puissance
+                         or magie like :magie
+                         or defense like :defense");
                         $valeur="%".$_GET['search']."%";
-                        $requete->bindParam(1,$valeur);
-                        $requete->bindParam(2,$valeur);
-                        $requete->bindParam(3,$valeur);
+                        $requete->bindValue("id",$valeur);
+                        $requete->bindParam("nom",$valeur);
+                        $requete->bindParam("hp",$valeur);
+                        $requete->bindParam("mp",$valeur);
+                        $requete->bindParam("puissance",$valeur);
+                        $requete->bindParam("magie",$valeur);
+                        $requete->bindParam("defense",$valeur);
                         $requete->execute();
                     }
                     else $requete=$db->query("SELECT * FROM joueurs");
