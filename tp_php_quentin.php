@@ -1,3 +1,10 @@
+<?php
+require('Joueurs.php');
+require('Armes.php');
+session_start();
+
+?>
+
 <!DOCTYPE html>
     <html lang="fr">
 
@@ -19,7 +26,7 @@
 
             <br />
 
-            <form>
+            <form action="tp_php_quentin.php" method="post">
                 <h3>Formulaire de Création</h3>
 
                 <div class="mb-3">
@@ -53,9 +60,8 @@
                 </div>
 
                 <div class="col-auto">
-                    <input type="button" value="Créer" class="btn btn-primary mb-3"
+                    <input type="submit" value="Créer" class="btn btn-primary mb-3"
                 </div>
-
             </form>
 
             <br />
@@ -81,7 +87,6 @@
                 </thead>
                 <tbody>
                 <?php
-                    require('Joueurs.php');
                     $user="root";
                     $pass="";
                     $dbname="quentincda9";
@@ -121,10 +126,40 @@
                         echo "<td>".$joueur['hp']."</td>";
                         echo "<td>".$joueur['mp']."</td>";
                         echo "<td>".$joueur['puissance']."</td>";
+                        echo "<td>".$joueur['magie']."</td>";
                         echo "<td>".$joueur['defense']."</td>";
                         echo "</tr>";
                     }
                 ?>
+
+                <?php
+                if(isset($_POST['nom'])) {
+
+                    $nom=$_POST['nom'];
+                    $hp=$_POST['hp'];
+                    $mp=$_POST['mp'];
+                    $puissance=$_POST['puissance'];
+                    $magie=$_POST['magie'];
+                    $defense=$_POST['defense'];
+
+                    $joueur = new Joueur($nom,$hp,$mp,$puissance,$magie,$defense);
+
+                    if(isset($_SESSION['joueurs'])) {
+                        $joueurs=$_SESSION['joueurs'];
+                    }
+                    else {
+                        $joueurs=array();
+                        $_SESSION['joueurs']=$joueurs;
+                    }
+                    $joueurs[]=$joueur;
+
+                    $_SESSION['joueurs']=$joueurs;
+                    foreach($joueurs as $joueur) {
+                        echo $joueur;
+                    }
+                }
+                ?>
+
                 </tbody>
 
             </table>
@@ -146,7 +181,6 @@
                 </thead>
                 <tbody>
                 <?php
-                    require('Armes.php');
                     $user="root";
                     $pass="";
                     $dbname="quentincda9";
